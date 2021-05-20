@@ -1,4 +1,5 @@
 {
-    "port" : 5000,
-    "mongoUri": "mongodb+srv://evgenprushak:mama190287@cluster0.gsfp1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+  "port": 5000,
+  "jwtSecret": "123",
+  "mongoUri": "mongodb+srv://evgenprushak:mama190287@cluster0.gsfp1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 }
