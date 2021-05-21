@@ -4,7 +4,7 @@ import { useMessage } from "../hooks/message.hook";
 
 export const AuthPage = () => {
   const message = useMessage();
-  const { loaging, error, request, clearError } = useHttp();
+  const { loading, error, request, clearError } = useHttp();
   const [form, setForm] = useState({ email: "", password: "" });
 
   useEffect(() => {
@@ -60,14 +60,14 @@ export const AuthPage = () => {
             <button
               className="btn yellow darken-4"
               style={{ marginRight: 10 }}
-              disabled={loaging}
+              disabled={loading}
             >
               Войти
             </button>
             <button
               className="btn gray lighten-1 black-text"
               onClick={registerHandler}
-              disabled={loaging}
+              disabled={loading}
             >
               РегистрациЫ
             </button>

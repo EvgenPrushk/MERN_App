@@ -1,12 +1,12 @@
 import { useState, useCallback } from "react";
 
 export const useHttp = () => {
-  const [loaging, setLoaging] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const request = useCallback(
     async (url, method = "GET", body = null, headers = {}) => {
-      setLoaging(true);
+      setLoading(true);
       try {
         // if send body put to string
         if (body) {
@@ -22,12 +22,12 @@ export const useHttp = () => {
           throw new Error(data.message || "Что-то пошло не так");
         }
 
-        setLoaging(false);
+        setLoading(false);
 
         return data;
       } catch (e) {
         console.log("Cath", e.message);
-        setLoaging(false);
+        setLoading(false);
         setError(e.message);
         throw e;
       }
@@ -37,5 +37,5 @@ export const useHttp = () => {
 
   const clearError = () => setError(null);
 
-  return { loaging, request, error, clearError };
+  return { loading, request, error, clearError };
 };
