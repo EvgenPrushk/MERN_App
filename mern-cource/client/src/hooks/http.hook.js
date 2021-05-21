@@ -1,12 +1,40 @@
-import React, { useState } from "react";
+import { useState, useCallback } from "react";
 
-export const useHttp =() => {
-    const [loaging, setLoaging] = useState(false)
-    const [error, setError] = useState(null)
+export const useHttp = () => {
+  const [loaging, setLoaging] = useState(false);
+  const [error, setError] = useState(null);
 
-    const request = () =>{
+  const request = useCallback(
+    async (url, method = "GET", body = null, headers = {}) => {
+      setLoaging(true);
+      try {
+        // if send body put to string
+        if (body) {
+          body = JSON.stringify(body);
+          //indicate json format
+          headers["Content-Type"] = "application/json";
+        }
+        const response = await fetch(url, { method, body, headers });
 
-    }
+        const data = await response.json();
 
-    return {loading, request, error}
-}
+        if (!response.ok) {
+          throw new Error(data.message || "Что-то пошло не так");
+        }
+
+        setLoaging(false);
+
+        return data;
+      } catch (e) {
+        setLoaging(false);
+        setError(e.message);
+        throw e;
+      }
+    },
+    []
+  );
+
+  const clearError = () => setError(null);
+
+  return { loaging, request, error, clearError };
+};

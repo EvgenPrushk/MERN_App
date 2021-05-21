@@ -3,6 +3,8 @@ const config = require("config");
 const mongoose = require("mongoose");
 
 const app = express();
+// parse body.date
+app.use(express.json({extended: true}))
 
 app.use('/api/auth', require('./routes/auth.routes'))
 
