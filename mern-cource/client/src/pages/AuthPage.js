@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHttp } from "../hooks/http.hook";
 import { useMessage } from "../hooks/message.hook";
+import { AuthContext } from "../context/AuthContext";
 
 export const AuthPage = () => {
+  const auth = useContext(AuthContext);
   const message = useMessage();
   const { loading, error, request, clearError } = useHttp();
   const [form, setForm] = useState({ email: "", password: "" });
@@ -10,16 +12,24 @@ export const AuthPage = () => {
   useEffect(() => {
     console.log("Error", error);
     message(error);
-    // clearError();
-  }, [error, message]);
+    clearError();
+  }, [error, message, clearError]);
 
-  const changeHadler = (event) => {
+  const changeHandler = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
   const registerHandler = async () => {
     try {
       const data = await request("/api/auth/register", "POST", { ...form });
+      message(data.message);
+      console.log("data", data);
+    } catch (e) {}
+  };
+  const loginHandler = async () => {
+    try {
+      const data = await request("/api/auth/login", "POST", { ...form });
+      auth.login(data.token, data.userId);
       console.log("data", data);
     } catch (e) {}
   };
@@ -39,10 +49,12 @@ export const AuthPage = () => {
                   type="text"
                   name="email"
                   className="yellow-input"
-                  onChange={changeHadler}
+                  value={form.email}
+                  onChange={changeHandler}
                 />
                 <label htmlFor="email"> Email</label>
               </div>
+              
               <div className="input-field">
                 <input
                   placeholder="Введите пароль"
@@ -50,7 +62,8 @@ export const AuthPage = () => {
                   type="password"
                   name="password"
                   className="yellow-input"
-                  onChange={changeHadler}
+                  value={form.password}
+                  onChange={changeHandler}
                 />
                 <label htmlFor="password"> Пароль</label>
               </div>
@@ -61,6 +74,7 @@ export const AuthPage = () => {
               className="btn yellow darken-4"
               style={{ marginRight: 10 }}
               disabled={loading}
+              onClick={loginHandler}
             >
               Войти
             </button>
