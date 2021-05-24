@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { LinkCard } from "../components/LinkCard";
 import { Loader } from "../components/Loader";
 import { AuthContext } from "../context/AuthContext";
 import { useHttp } from "../hooks/http.hook";
@@ -24,5 +25,5 @@ export const DetailPage = () => {
   if (loading) {
     return <Loader />;
   }
-  return <>{!loading && link && <LinkCard />}</>;
+  return <>{!loading && link && <LinkCard link={link} />}</>;
 };
